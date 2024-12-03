@@ -1,7 +1,7 @@
 ﻿namespace Domain.Common;
 
-public class AuditableEntity : AuditableEntity<int> { }
-public class AuditableEntity<T> : Entity<T>
+public class AuditableEntity : AuditableEntity<int>  { }
+public class AuditableEntity<T> : Entity<T> , IAuditableEntity
 {
     public string CreatedBy { get; set; }
     public DateTime CreatedAt { get; set; }

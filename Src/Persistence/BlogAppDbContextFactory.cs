@@ -22,6 +22,6 @@ public class BlogAppDbContextFactory : DesignTimeDbContextFactoryBase<BlogAppDbC
     
     protected override BlogAppDbContext CreateNewInstance(DbContextOptions<BlogAppDbContext> options)
     {
-        return new BlogAppDbContext(options, _currentUserService, _dateTime);
+        return new BlogAppDbContext(options , _currentUserService, _dateTime);
     }
 }

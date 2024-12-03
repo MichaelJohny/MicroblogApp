@@ -7,11 +7,11 @@ namespace MicrblogApp.Persistence;
 public abstract class DesignTimeDbContextFactoryBase<TContext> :
     IDesignTimeDbContextFactory<TContext> where TContext : DbContext
 {
-    private const string ConnectionStringName = "LoyaltyCoreConnection";
+    private const string ConnectionStringName = "BlogAppConnection";
     private const string AspNetCoreEnvironment = "ASPNETCORE_ENVIRONMENT";
     public TContext CreateDbContext(string[] args)
     {
-        var basePath = Directory.GetCurrentDirectory() + string.Format("{0}..{0}LoyaltyCore.Api", Path.DirectorySeparatorChar);
+        var basePath = Directory.GetCurrentDirectory() + string.Format("{0}..{0}Api", Path.DirectorySeparatorChar);
         var environment = Environment.GetEnvironmentVariable(AspNetCoreEnvironment);
         Console.WriteLine($"Environment  >> '{environment}'.");
         return Create(basePath, environment);

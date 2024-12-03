@@ -2,7 +2,7 @@
 
 namespace Domain.Entities;
 
-public class Post : AuditableEntity<Guid> , ISoftDelete
+public class Post : AuditableEntity<Guid> , ISoftDelete , IAuditableEntity
 {
     public string Content { get; set; }
     public string ImageUrl { get; set; }
