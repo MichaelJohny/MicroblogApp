@@ -29,6 +29,7 @@ public class BlogAppDbContext : DbContext , IBlogAppDbContext
 
 
     public DbSet<Post> Posts { get; set; }
+    public DbSet<PostProcessingImage> PostImages { get; set; }
     
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
     {

@@ -20,7 +20,7 @@ public class PostConfiguration : IEntityTypeConfiguration<Post>
             .IsRequired() // The content is mandatory
             .HasMaxLength(140); // Maximum of 140 characters
         
-        builder.Property(p => p.ImageUrl)
+        builder.Property(p => p.OriginalImageUrl)
             .HasMaxLength(2048) // Reasonable URL length
             .IsRequired(false); // Image is optional
         
@@ -33,9 +33,14 @@ public class PostConfiguration : IEntityTypeConfiguration<Post>
         builder.Property(p => p.CreatedAt)
             .IsRequired();
         
+        builder.HasMany(e => e.Images)
+            .WithOne(e => e.Post)
+            .HasForeignKey(e => e.PostId);
+        
         builder.HasQueryFilter(p => !p.IsDeleted);
         
         // Indexes (optional but recommended for better query performance)
         builder.HasIndex(p => p.CreatedAt);
+        
     }
 }
