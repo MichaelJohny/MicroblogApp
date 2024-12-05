@@ -1,13 +1,19 @@
 using Api;
+using Api.Common;
 using Application;
 using MicrblogApp.Infrastructure;
 using MicrblogApp.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+var seqServerUrl = builder.Configuration["seq:Url"];
+Log.Logger = LoggingBuilder.BuildLogging(seqServerUrl);
 
+Log.Logger.Information("-- Hello MicroblogApp--");
+builder.Host.UseSerilog();
 var services = builder.Services;
 
 services.AddApplication()

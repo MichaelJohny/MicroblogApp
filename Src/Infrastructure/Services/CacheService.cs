@@ -31,6 +31,7 @@ public class CacheService : ICacheService
 
     public void SetCache<T>(string key, T value, int time = 0) where T : class
     {
+        if(string.IsNullOrEmpty(key)) return;
         var response = JsonSerializer.Serialize(value);
         var cachingTime = time == 0 ? TimeSpan.FromHours(360) : TimeSpan.FromHours(time);
         _database.StringSetAsync(key, response, cachingTime);
