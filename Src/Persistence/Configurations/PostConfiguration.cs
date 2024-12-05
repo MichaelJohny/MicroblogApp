@@ -36,6 +36,9 @@ public class PostConfiguration : IEntityTypeConfiguration<Post>
         builder.HasMany(e => e.Images)
             .WithOne(e => e.Post)
             .HasForeignKey(e => e.PostId);
+        builder.HasOne(e => e.User)
+            .WithMany(e => e.Posts)
+            .HasForeignKey(e => e.UserId);
         
         builder.HasQueryFilter(p => !p.IsDeleted);
         
@@ -44,3 +47,4 @@ public class PostConfiguration : IEntityTypeConfiguration<Post>
         
     }
 }
+

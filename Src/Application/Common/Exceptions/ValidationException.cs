@@ -1,4 +1,5 @@
 ﻿using FluentValidation.Results;
+using Microsoft.AspNetCore.Identity;
 
 namespace Application.Common.Exceptions;
 
@@ -9,7 +10,16 @@ public class ValidationException : Exception
     {
         Failures = new Dictionary<string, string[]>();
     }
-
+    public ValidationException(IEnumerable<IdentityError> failures) : this()
+    {
+        var codes = failures.Select(e => e.Code).Distinct();
+        foreach (var code in codes)
+        {
+            var codeFailures = failures.Where(e => e.Code == code).Select(e => e.Description)
+                .ToArray();
+            Failures.Add(code, codeFailures);
+        }
+    }
     public ValidationException(List<ValidationFailure> failures)
         : this()
     {

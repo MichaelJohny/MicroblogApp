@@ -6,6 +6,7 @@ namespace MicrblogApp.Infrastructure.Services;
 
 public class CurrentUserService : ICurrentUserService
 {
+
     public string UserId { get; }
     
     public CurrentUserService(IHttpContextAccessor httpContextAccessor)

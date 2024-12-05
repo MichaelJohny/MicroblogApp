@@ -15,10 +15,12 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, Guid>
 {
     private readonly IBlogAppDbContext _dbContext;
     private readonly ICacheService _cache;
-    public CreatePostCommandHandler(IBlogAppDbContext dbContext, ICacheService cache)
+    private readonly ICurrentUserService _currentUserService;
+    public CreatePostCommandHandler(IBlogAppDbContext dbContext, ICacheService cache, ICurrentUserService currentUserService)
     {
         _dbContext = dbContext;
         _cache = cache;
+        _currentUserService = currentUserService;
     }
 
     public async Task<Guid> Handle(CreatePostCommand request, CancellationToken cancellationToken)
@@ -32,6 +34,7 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, Guid>
             CreatedAt = DateTime.UtcNow,
             Latitude = new Random().NextDouble() * 180 - 90, // Random latitude
             Longitude = new Random().NextDouble() * 360 - 180, // Random longitude,
+            UserId = _currentUserService.UserId,
             Images =
                 images.Select(i => new PostProcessingImage()
                 {

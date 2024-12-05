@@ -16,6 +16,8 @@ public static class DependencyInjection
         services.AddSingleton(_ => new BlobServiceClient(configuration["Blobstorage"]));
         services.AddScoped<ICloudStorage, AzureCloudStorage>();
         services.AddScoped<IImageProcessingService, ImageProcessingService>();
+        services.AddScoped<IJwtTokenService, JwtTokenService>();
+        services.AddScoped<IIdentityService, IdentityService>();
         return services;
     }
 }

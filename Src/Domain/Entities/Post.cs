@@ -13,15 +13,9 @@ public class Post : AuditableEntity<Guid> , ISoftDelete
     public string OriginalImageUrl { get; set; }
     public double Latitude { get; set; }
     public double Longitude { get; set; }
+    public string UserId { get; set; }
     public bool IsDeleted { get; set; }
 
+    public ApplicationUser User { get; set; }
     public ICollection<PostProcessingImage> Images { get; set; }
-}
-
-public class PostProcessingImage : Entity<long>
-{
-    public Guid PostId { get; set; }
-    
-    public string Url { get; set; }
-    public Post Post { get; set; }
 }

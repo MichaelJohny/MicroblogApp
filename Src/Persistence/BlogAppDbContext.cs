@@ -3,10 +3,12 @@ using Application.Common.Interfaces;
 using Common;
 using Domain.Common;
 using Domain.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace  MicrblogApp.Persistence;
 
-public class BlogAppDbContext : DbContext , IBlogAppDbContext
+public class BlogAppDbContext : IdentityDbContext<ApplicationUser>, IBlogAppDbContext
 {
     private readonly IDateTime _dateTime;
     private readonly ICurrentUserService _currentUserService;
@@ -59,6 +61,7 @@ public class BlogAppDbContext : DbContext , IBlogAppDbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(BlogAppDbContext).Assembly);
+        base.OnModelCreating(modelBuilder);
     }
 }
 
