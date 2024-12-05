@@ -1,34 +1,43 @@
 ﻿using Application.Common.Interfaces;
 using Domain.Entities;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 
-namespace Application.Features.Posts.Commands;
+namespace Application.Features.Posts.Commands.CreatePost;
 
 public class CreatePostCommand : IRequest<Guid>
 {
+    public string Id { get; set; }
     public string Content { get; set; }
-    //public IFormFile Image { get;  }
+    public string Image { get; set; }
 }
 
 public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, Guid>
 {
     private readonly IBlogAppDbContext _dbContext;
-
-    public CreatePostCommandHandler(IBlogAppDbContext dbContext)
+    private readonly ICacheService _cache;
+    public CreatePostCommandHandler(IBlogAppDbContext dbContext, ICacheService cache)
     {
         _dbContext = dbContext;
+        _cache = cache;
     }
 
     public async Task<Guid> Handle(CreatePostCommand request, CancellationToken cancellationToken)
     {
+        var images = _cache.GetFromCache(request.Id);
         var post = new Post
         {
-            Id = Guid.NewGuid(),
+            Id = string.IsNullOrEmpty(request.Id) ? Guid.NewGuid() :Guid.Parse(request.Id),
             Content = request.Content,
+            OriginalImageUrl = request.Image,
             CreatedAt = DateTime.UtcNow,
             Latitude = new Random().NextDouble() * 180 - 90, // Random latitude
-            Longitude = new Random().NextDouble() * 360 - 180, // Random longitude
+            Longitude = new Random().NextDouble() * 360 - 180, // Random longitude,
+            Images =
+                images.Select(i => new PostProcessingImage()
+                {
+                    PostId =Guid.Parse(request.Id),
+                    Url = i
+                }).ToList()
         };
 
         await _dbContext.Posts.AddAsync(post, cancellationToken);

@@ -1,3 +1,4 @@
+using Api;
 using Application;
 using MicrblogApp.Infrastructure;
 using MicrblogApp.Persistence;
@@ -9,7 +10,9 @@ var services = builder.Services;
 
 services.AddApplication()
     .AddPersistence(builder.Configuration)
-    .AddInfrastructure();
+    .AddInfrastructure(builder.Configuration);
+
+services.AddRedis(builder.Configuration);
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 services.AddEndpointsApiExplorer().AddControllers();

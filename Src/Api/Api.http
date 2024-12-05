@@ -1,6 +1,21 @@
-@Api_HostAddress = http://localhost:5030
+@Api_HostAddress = https://localhost:7293
 
 GET {{Api_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
+
+
+POST {{Api_HostAddress}}/api/Posts/create
+accept: */*
+Content-Type: application/json
+
+{
+  "id": "b1455cb7-f229-4feb-b5fb-c567a5c9ff2b",
+  "content": "post number 3",
+  "image": "https://tweets.blob.core.windows.net/post-images/b6abb88b-0f22-4aac-8a49-021d818ca060.webp"
+}
+
+###
+
+

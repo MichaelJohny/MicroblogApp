@@ -9,16 +9,19 @@ namespace MicrblogApp.Infrastructure.Services;
 
 using static Constants;
 
-public class ImageProcessingService
+public class ImageProcessingService : IImageProcessingService
 {
     private readonly ICloudStorage _cloudStorage;
+    private readonly ICacheService _cache;
+
+    public ImageProcessingService(ICloudStorage cloudStorage, ICacheService cache)
+    {
+        _cloudStorage = cloudStorage;
+        _cache = cache;
+    }
 
 
-    public ImageProcessingService(ICloudStorage cloudStorage)
-        => _cloudStorage = cloudStorage;
-
-
-    public async Task<string> ProcessImageAsync(Stream imageStream, string originalFileName)
+    public async Task ProcessImageAsync(Stream imageStream, string originalFileName , string postId)
     {
         // Generate a unique filename
         var fileName = $"{Guid.NewGuid()}.webp";
@@ -33,9 +36,7 @@ public class ImageProcessingService
                 => await _cloudStorage.UploadFileAsync(fileBlob));
 
             var uploadedUrls = await Task.WhenAll(uploadTasks);
-
-            // Return the URL of the first (default) image
-            return uploadedUrls.First();
+            _cache.SetCache(postId, uploadedUrls);
         }
         catch (Exception ex)
         {
