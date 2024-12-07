@@ -52,6 +52,8 @@ This repository contains a robust microblogging application built using **.NET C
    ```bash
    git clone https://github.com/MichaelJohny/MicroblogApp.git
    cd microblogging-app
+2. run docker compose
+    you will find file dock-compose file run docker compose up to get the db - redis - postgresl instance with configurations used at code    
 
 ## Project Structure
 
