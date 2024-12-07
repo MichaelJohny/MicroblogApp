@@ -1,0 +1,45 @@
+﻿version: '3.8'
+services:
+  redis:
+    image: redis:alpine
+    container_name: redis
+    environment:
+      - REDIS_PASSWORD=123456
+    ports:
+      - 6379:6379
+    volumes:
+      - ./data/redis:/data
+    networks:
+      - app-network
+  postgresql:
+    image: postgres:13.1-alpine
+    container_name: postgresql
+    environment:
+      - POSTGRES_USER=postgresUser
+      - POSTGRES_PASSWORD=postgresPW
+      - POSTGRES_DB=postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - ./data/postgresql:/var/lib/postgresql/data
+    networks:
+      - app-network
+  seq:
+    image: datalust/seq:latest
+    container_name: seq
+    ports:
+      - '5342:80'
+      - '5341:5341'
+    volumes:
+      - ./data/seq:/data
+    environment:
+      ACCEPT_EULA: 'Y'
+      SEQ_CACHE_SYSTEMRAMTARGET: "0.2"
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge
+
+# docker-compose up -d redis rabbitmq postgresql seq
+# service docker start
