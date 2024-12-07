@@ -86,7 +86,10 @@ The project is structured following *Clean Architecture* principles, promoting s
 │
 ├── README.md                 # Project documentation
 └── appsettings.json          # Configuration settings
+```
 
 ## Suggestions
-```plaintext
-I recommend transitioning the application to a microservices architecture to enhance scalability, resilience, and availability. For example, we could create a dedicated service for handling image uploads, resizing, and downloads, as well as another service for managing posts (including creation, reading, updating, and deletion). Additionally, for authentication, I suggest using Keycloak, an open-source solution that offers robust support for database integration.
+
+I recommend transitioning the application to a microservices architecture to enhance scalability, resilience, and availability. 
+For example, we could create a dedicated service for handling image uploads, resizing, and downloads, as well as another service for managing posts (including creation, reading, updating, and deletion).
+Additionally, for authentication, I suggest using Keycloak, an open-source solution that offers robust support for database integration.
