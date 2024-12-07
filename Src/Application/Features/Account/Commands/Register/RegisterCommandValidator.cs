@@ -15,6 +15,6 @@ public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
     }
 
     private bool MatchConfirmPassword(RegisterCommand model, string password)
-        => model.PasswordConfirmation == password;
+        => model.ConfirmPassword == password;
 
 }

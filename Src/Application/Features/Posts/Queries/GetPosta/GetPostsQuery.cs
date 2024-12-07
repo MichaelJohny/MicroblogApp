@@ -1,4 +1,5 @@
 ﻿using Application.Common.Interfaces;
+using Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,7 +21,7 @@ public class GetPostsQueryHandler : IRequestHandler<GetPostsQuery, IEnumerable<G
     public async Task<IEnumerable<GetPostsOutputDto>> Handle(GetPostsQuery request, CancellationToken cancellationToken)
     {
         var posts = await _dbContext.Posts.Include(e => e.Images)
-            .Include(e=> e.User)
+            .Include(e => e.User)
             .AsNoTracking()
             .Select(e => new PostDto()
             {
@@ -28,16 +29,21 @@ public class GetPostsQueryHandler : IRequestHandler<GetPostsQuery, IEnumerable<G
                 Content = e.Content,
                 OriginalImage = e.OriginalImageUrl,
                 Images = e.Images.Select(s => s.Url).ToList(),
-                UserName = e.User.UserName
-            }).Take(10).ToListAsync(cancellationToken);
+                UserName = e.User.UserName,
+                CreatedAt = e.CreatedAt
+            }).OrderByDescending(p => p.CreatedAt)
+            .ToListAsync(cancellationToken);
 
+        var imagesSize = Constants.GetRandomImageSize();
         var result = posts.Select(p =>
-            new GetPostsOutputDto(p.Id, p.Content, _imageProcessingService.SelectBestImageUrl(p.Images, 1024, 802), p.UserName));
+            new GetPostsOutputDto(p.Id, p.Content,
+                _imageProcessingService.SelectBestImageUrl(p.Images, imagesSize[0], imagesSize[1]),
+                p.UserName, p.CreatedAt));
         return result;
     }
 }
 
-public record GetPostsOutputDto(Guid Id, string Content, string ImageUrl, string UserName);
+public record GetPostsOutputDto(Guid Id, string Content, string ImageUrl, string UserName, DateTime createdAt);
 
 public class PostDto
 {
@@ -45,5 +51,6 @@ public class PostDto
     public string Content { get; set; }
     public string OriginalImage { get; set; }
     public string UserName { get; set; }
+    public DateTime CreatedAt { get; set; }
     public List<string> Images { get; set; }
 }

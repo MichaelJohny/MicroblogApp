@@ -9,4 +9,11 @@ public static class Constants
         new[] { 1920, 1080 }, // Full HD
         new[] { 2560, 1440 }, // QHD
     };
+    public static int[] GetRandomImageSize()
+    {
+        Random random = new Random();
+        int randomIndex = random.Next(ImageSizes.Length);
+        return ImageSizes[randomIndex];
+    }
+    
 }

@@ -21,7 +21,8 @@ services.AddApplication()
     .AddInfrastructure(builder.Configuration);
 
 services.AddRedis(builder.Configuration)
-    .AddIdentity(builder.Configuration);
+    .AddIdentity(builder.Configuration)
+    .AddCustomCors();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 services.AddEndpointsApiExplorer().AddControllers();
@@ -65,7 +66,7 @@ app.UseSwagger();
 app.UseSwaggerUI();
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.UseCors("CorsPolicy");
 app.UseHttpsRedirection();
 app.MapControllers();
 

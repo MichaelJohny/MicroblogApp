@@ -70,4 +70,11 @@ public static class DependencyInjection
        
         return services;
     }
+    public static IServiceCollection AddCustomCors(this IServiceCollection services)
+    {
+        services.AddCors(options => options.AddPolicy("CorsPolicy",
+            b => { b.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader(); }));
+
+        return services;
+    }
 }

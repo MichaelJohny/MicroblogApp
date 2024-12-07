@@ -8,7 +8,7 @@ public class RegisterCommand : IRequest<UserDto>
     public string UserName { get; set; }
     public string Email { get; set; }
     public string Password { get; set; }
-    public string PasswordConfirmation { get; set; }
+    public string ConfirmPassword { get; set; }
 }
 
 public class RegisterCommandHandler : IRequestHandler<RegisterCommand, UserDto>
